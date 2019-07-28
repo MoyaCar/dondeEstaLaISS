@@ -1,28 +1,8 @@
-import 'dart:convert';
-
+import 'Jsonfetcher.dart';
+import 'IssData.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
-class IssData {
-  final double latitude;
-  final double longitude;
-
-  IssData({this.latitude, this.longitude});
-  factory IssData.fromApi(Map<String, dynamic> json) {
-    return IssData(latitude: json['latitude'], longitude: json['longitude']);
-  }
-}
-
-Future<IssData> obtenerDesdeApi() async {
-  final response =
-      await http.get('https://api.wheretheiss.at/v1/satellites/25544');
-  if (response.statusCode == 200) {
-    return IssData.fromApi(json.decode(response.body));
-  } else {
-    throw Exception('Sin Inet o Datos');
-  }
-}
 
 void main() => runApp(MyApp());
 
@@ -68,7 +48,10 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
         future: geolocalizacion,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-         
+            addmark(
+              LatLng(snapshot.data.latitude, snapshot.data.longitude),
+            );
+
             return Center(
                 child: Column(
               children: <Widget>[
@@ -87,17 +70,6 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
                 ),
                 Text('${snapshot.data.latitude}'),
                 Text('${snapshot.data.longitude}'),
-                RaisedButton(
-                  onPressed: (){setState(() {
-                    addmark(LatLng(snapshot.data.latitude, snapshot.data.longitude),);
-                  });
-                  markers.remove(1);
-                  setState(() {
-                    addmark(LatLng(snapshot.data.latitude, snapshot.data.longitude),);
-                  });
-                  },
-                
-                )
               ],
             ));
           }

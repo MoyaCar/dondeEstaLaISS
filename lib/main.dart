@@ -38,15 +38,29 @@ class MyApp extends StatelessWidget {
 class PantallaPrincipal extends StatefulWidget {
   PantallaPrincipal({Key key}) : super(key: key);
 
-  _PantallaPrincipalState createState() =>
-      _PantallaPrincipalState(geolocalizacion: obtenerDesdeApi());
+  _PantallaPrincipalState createState() => _PantallaPrincipalState();
 }
 
 class _PantallaPrincipalState extends State<PantallaPrincipal> {
   GoogleMapController mapController;
-  final Future<IssData> geolocalizacion;
+  Future<IssData> geolocalizacion;
 
-  _PantallaPrincipalState({this.geolocalizacion});
+  Set<Marker> markers = {};
+  @override
+  void initState() {
+    super.initState();
+    obtenerData();
+  }
+
+  obtenerData() async {
+    setState(() {
+      geolocalizacion = obtenerDesdeApi();
+    });
+
+    await Future.delayed(Duration(milliseconds: 4000));
+    obtenerData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,21 +68,54 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
         future: geolocalizacion,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+         
             return Center(
-              child: GoogleMap(
-                onMapCreated: onmap,
-                initialCameraPosition: CameraPosition(
-                  target:
-                      LatLng(snapshot.data.latitude, snapshot.data.longitude),
+                child: Column(
+              children: <Widget>[
+                Container(
+                  width: double.infinity,
+                  height: 300,
+                  child: GoogleMap(
+                    markers: markers,
+                    onMapCreated: onmap,
+                    initialCameraPosition: CameraPosition(
+                      zoom: 5,
+                      target: LatLng(
+                          snapshot.data.latitude, snapshot.data.longitude),
+                    ),
+                  ),
                 ),
-              ),
-            );
+                Text('${snapshot.data.latitude}'),
+                Text('${snapshot.data.longitude}'),
+                RaisedButton(
+                  onPressed: (){setState(() {
+                    addmark(LatLng(snapshot.data.latitude, snapshot.data.longitude),);
+                  });
+                  markers.remove(1);
+                  setState(() {
+                    addmark(LatLng(snapshot.data.latitude, snapshot.data.longitude),);
+                  });
+                  },
+                
+                )
+              ],
+            ));
           }
           if (snapshot.hasError) {
             return Text(snapshot.error);
           }
-          return CircularProgressIndicator();
+          return Center(child: CircularProgressIndicator());
         },
+      ),
+    );
+  }
+
+  void addmark(LatLng latLng) {
+    markers.add(
+      Marker(
+        markerId: MarkerId('Iss'),
+        position: latLng,
+        infoWindow: InfoWindow(title: 'Iss', snippet: 'Ubicación actual'),
       ),
     );
   }

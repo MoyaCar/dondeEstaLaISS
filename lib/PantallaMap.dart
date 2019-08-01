@@ -33,67 +33,71 @@ class _PantallaMapaState extends State<PantallaMapa>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder(
-        future: geolocalizacion,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            addmark(
-              LatLng(snapshot.data.latitude, snapshot.data.longitude),
-            );
+        body: ListView(
+      children: <Widget>[
+        FutureBuilder(
+          future: geolocalizacion,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              addmark(
+                LatLng(snapshot.data.latitude, snapshot.data.longitude),
+              );
 
-            return Center(
+              return Center(
                 child: Column(
-              children: <Widget>[
-                Container(
-                  width: double.infinity,
-                  height: 300,
-                  child: GoogleMap(
-                    markers: markers,
-                    onMapCreated: onmap,
-                    initialCameraPosition: CameraPosition(
-                      zoom: 3,
-                      target: LatLng(
-                          snapshot.data.latitude, snapshot.data.longitude),
-                    ),
-                  ),
-                ),
-                Text('${snapshot.data.latitude}'),
-                Text('${snapshot.data.longitude}'),
-                RaisedButton(
-                  child: Center(
-                    child: Text('Refesh'),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return PantallaMapa();
-                        },
-                      ),
-                    );
-                  },
-                ),
-                RaisedButton(
-                    child: Text('VivoNow'),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        PopUpRoute(
-                          child: PopUp(),
+                  children: <Widget>[
+                    Container(
+                      width: double.infinity,
+                      height: 300,
+                      child: GoogleMap(
+                        markers: markers,
+                        onMapCreated: onmap,
+                        initialCameraPosition: CameraPosition(
+                          zoom: 3,
+                          target: LatLng(
+                              snapshot.data.latitude, snapshot.data.longitude),
                         ),
-                      );
-                    }),
-              ],
-            ));
-          }
-          if (snapshot.hasError) {
-            return Text(snapshot.error);
-          }
-          return Center(child: CircularProgressIndicator());
-        },
-      ),
-    );
+                      ),
+                    ),
+                    Text('${snapshot.data.latitude}'),
+                    Text('${snapshot.data.longitude}'),
+                    RaisedButton(
+                      child: Center(
+                        child: Text('Refesh'),
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return PantallaMapa();
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                    RaisedButton(
+                        child: Text('VivoNow'),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            PopUpRoute(
+                              child: PopUp(),
+                            ),
+                          );
+                        }),
+                  ],
+                ),
+              );
+            }
+            if (snapshot.hasError) {
+              return Text(snapshot.error);
+            }
+            return Center(child: CircularProgressIndicator());
+          },
+        ),
+      ],
+    ));
   }
 
   void addmark(LatLng latLng) {

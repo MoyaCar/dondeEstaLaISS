@@ -10,6 +10,7 @@ class FullScreenIss extends StatefulWidget {
 }
 
 class _FullScreenIssState extends State<FullScreenIss> {
+  YoutubePlayerController _playerController;
   @override
   void initState() {
     super.initState();
@@ -24,14 +25,19 @@ class _FullScreenIssState extends State<FullScreenIss> {
           Container(
             alignment: Alignment.center,
             child: YoutubePlayer(
-              context: context,
-              videoId: '4993sBLAzGA',
-              flags: YoutubePlayerFlags(
-                autoPlay: true,
-                isLive: true,
-                showVideoProgressIndicator: true,
-              ),
-            ),
+                  context: context,
+                  videoId: '4993sBLAzGA',
+                  flags: YoutubePlayerFlags(
+                    hideControls: true,
+                    autoPlay: true,
+                    isLive: true,
+                    showVideoProgressIndicator: true,
+                  ),
+                  onPlayerInitialized: (controller) {
+                    _playerController = controller;
+                    _playerController.play();
+                  },
+                ),
           ),
         ],
       ),

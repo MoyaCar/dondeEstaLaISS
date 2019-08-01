@@ -1,9 +1,13 @@
+import 'package:fetchdata/MixinsViewModes.dart';
 import 'package:fetchdata/Vivo.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'PopUp.dart';
+import 'MixinsViewModes.dart';
 
 import 'IssData.dart';
 import 'Jsonfetcher.dart';
+import 'PopUpRoute.dart';
 
 class PantallaMapa extends StatefulWidget {
   PantallaMapa({Key key}) : super(key: key);
@@ -11,7 +15,8 @@ class PantallaMapa extends StatefulWidget {
   _PantallaMapaState createState() => _PantallaMapaState();
 }
 
-class _PantallaMapaState extends State<PantallaMapa> {
+class _PantallaMapaState extends State<PantallaMapa>
+    with PortraitModeOnly<PantallaMapa> {
   GoogleMapController mapController;
   Future<IssData> geolocalizacion;
   Set<Marker> markers = {};
@@ -74,10 +79,8 @@ class _PantallaMapaState extends State<PantallaMapa> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return VideoEnVivo();
-                          },
+                        PopUpRoute(
+                          child: PopUp(),
                         ),
                       );
                     }),

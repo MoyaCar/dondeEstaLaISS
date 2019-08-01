@@ -8,6 +8,6 @@ Future<IssData> obtenerDesdeApi() async {
   if (response.statusCode == 200) {
     return IssData.fromApi(json.decode(response.body));
   } else {
-    throw Exception('Sin Inet o Datos');
+    throw Exception('Sin Ineternet');
   }
 }

@@ -17,6 +17,7 @@ environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
+  youtube_player_flutter: ^3.0.0+1
   google_maps_flutter: 
   http: any
   flutter:
@@ -37,6 +38,10 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
+  fonts:
+    - family: RussoOne
+      fonts:
+        - asset: fonts/RussoOne-Regular.ttf
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

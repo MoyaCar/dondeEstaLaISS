@@ -1,4 +1,3 @@
-import 'package:fetchdata/FullScreenIss.dart';
 import 'package:fetchdata/MixinsViewModes.dart';
 import 'package:fetchdata/Vivo.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +11,19 @@ class PopUp extends StatefulWidget {
 }
 
 class _PopUpState extends State<PopUp> with PortraitModeOnly<PopUp> {
+  Color colorFuente = Colors.white.withOpacity(0.8);
+  Color colorFondo = Color(0xff1C1818);
+  Color colorsecundario = Color(0xff6076E9);
+  Color colorfondoPopUp = Colors.black87;
   YoutubePlayerController _playerController;
+  bool _estaEnPantallaCompleta = false;
+
+  salirDePantallaCompleta() {
+    _playerController.exitFullScreen();
+    _estaEnPantallaCompleta = false;
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -24,7 +35,7 @@ class _PopUpState extends State<PopUp> with PortraitModeOnly<PopUp> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(20.0),
         child: Container(
           width: double.infinity,
           height: double.infinity,
@@ -44,15 +55,15 @@ class _PopUpState extends State<PopUp> with PortraitModeOnly<PopUp> {
                     alignment: MainAxisAlignment.center,
                     children: <Widget>[
                       IconButton(
-                        icon: Icon(Icons.volume_mute),
+                        icon: Icon(Icons.volume_mute, color: colorFuente,),
                         onPressed: () {},
                       ),
                       IconButton(
-                        icon: Icon(Icons.fullscreen),
-                        onPressed: () {
-                         _playerController.enterFullScreen();
-                        }
-                      ),
+                          icon: Icon(Icons.fullscreen, color: colorFuente,),
+                          onPressed: () {
+                            _estaEnPantallaCompleta = true;
+                            _playerController.enterFullScreen();
+                          }),
                     ],
                   ),
                 ),
@@ -77,6 +88,20 @@ class _PopUpState extends State<PopUp> with PortraitModeOnly<PopUp> {
           ),
         ),
       ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(top: 64),
+        child: FloatingActionButton(
+          backgroundColor: Colors.transparent,
+          mini: true,
+          onPressed: () {
+            _estaEnPantallaCompleta
+                ? salirDePantallaCompleta()
+                : Navigator.pop(context);
+          },
+          child: Icon(Icons.close),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
     );
   }
 

@@ -1,18 +1,29 @@
-Memoria
-
- 
- 
-
--Juego clásico de Memoria para Android e IOS.
+ISS?
 
  
 
--Implementa ReactiveX para la administracion de estados.
+Aplicación para buscar sobre qué parte del planeta se encuentra la Estacion Espacial Internacional.
 
  
 
--Utiliza animacón de tarjetas mediante Matriz de transformación.
+Conecta a multiples API 
+
+(GoogleMaps, ISSapi, Youtube)
 
  
 
--Utiliza Material Design.
+Mediante diferentes interfaces
+
+(PlugIn y Key, json, navegador web)
+
+ 
+
+Muestra video con transmisión en vivo desde la ISS
+
+ 
+
+Utiliza animaciones para generar continuidad en la Navegacion
+
+ 
+
+Implementa Material Design
